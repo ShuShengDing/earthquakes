@@ -83,11 +83,23 @@ def get_frequency(data, year):
     for earthquake in data["features"]:
         time = earthquake["properties"]["time"]
         date = datetime.datetime.fromtimestamp(time / 1000)
-        print(date)
         if date.year == year:
             count += 1
     return count
 
+def get_average_mag(data, year):
+    """Get the average magnitude of earthquakes in a given year."""
+    count = 0
+    total_magnitude = 0
+    for earthquake in data["features"]:
+        time = earthquake["properties"]["time"]
+        date = datetime.datetime.fromtimestamp(time / 1000)
+        if date.year == year:
+            count += 1
+            total_magnitude += get_magnitude(earthquake)
+    if count == 0:
+        return 0
+    return round(total_magnitude / count, 2)
 
 # With all the above functions defined, we can now call them and get the result
 data = get_data()
@@ -97,4 +109,6 @@ max_magnitude, max_location = get_maximum(data)
 print(f"The strongest earthquake was at {max_location} with magnitude {max_magnitude}")
 
 frequency = [[x, get_frequency(data, x)] for x in range(2000, 2019)]
-print(f"Frequency of earthquakes by year: {frequency}")
+average_magnitude = [[x, get_average_mag(data, x)] for x in range(2000, 2019)]
+frequency_average_mag = [[x, get_frequency(data, x), get_average_mag(data, x)] for x in range(2000, 2019)]
+print(f"Frequency and average magnitude of earthquakes by year: {frequency_average_mag}")
