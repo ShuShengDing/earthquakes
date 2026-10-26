@@ -112,3 +112,38 @@ frequency = [[x, get_frequency(data, x)] for x in range(2000, 2019)]
 average_magnitude = [[x, get_average_mag(data, x)] for x in range(2000, 2019)]
 frequency_average_mag = [[x, get_frequency(data, x), get_average_mag(data, x)] for x in range(2000, 2019)]
 print(f"Frequency and average magnitude of earthquakes by year: {frequency_average_mag}")
+
+import matplotlib.pyplot as plt
+
+# # Plot the frequency of earthquakes by year
+# years = [x[0] for x in frequency]
+# frequencies = [x[1] for x in frequency]
+# plt.plot(years, frequencies, marker='o')
+# plt.xlabel('Year')
+# plt.ylabel('Frequency')
+# plt.title('Frequency of Earthquakes by Year')
+# plt.show()
+
+# # Plot the average magnitude of earthquakes by year
+# years = [x[0] for x in frequency]
+# plt.plot(years, average_magnitudes, marker='o')
+# plt.xlabel('Year')
+# plt.ylabel('Average Magnitude')
+# plt.title('Average Magnitude of Earthquakes by Year')
+# plt.show()
+
+years = [x[0] for x in frequency]
+frequencies = [x[1] for x in frequency]
+average_magnitudes = [x[1] for x in average_magnitude]
+fig = plt.figure(figsize=(12, 6))
+fig.add_subplot(1, 2, 1)
+plt.plot(years, frequencies, marker='o')
+plt.xlabel('Year')
+plt.ylabel('Frequency')
+plt.title('Frequency of Earthquakes by Year')
+fig.add_subplot(1, 2, 2)
+plt.plot(years, average_magnitudes, marker='o')
+plt.xlabel('Year')
+plt.ylabel('Average Magnitude')
+plt.title('Average Magnitude of Earthquakes by Year')
+plt.show()
