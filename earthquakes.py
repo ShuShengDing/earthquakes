@@ -4,8 +4,9 @@
 # This is external library that you may need to install first.
 import requests
 import json
-
-def get_data():
+from pathlib import Path
+import datetime
+def get_data(save:Path | None = None):
     # With requests, we can ask the web service for the data.
     # Can you understand the parameters we are passing here?
     response = requests.get(
@@ -65,6 +66,7 @@ def get_location(earthquake):
 
 def get_maximum(data):
     """Get the magnitude and location of the strongest earthquake in the data."""
+    index = 0
     earthquake_information = data["features"]
     mag = 0
     location = None
@@ -72,8 +74,19 @@ def get_maximum(data):
         if get_magnitude(i) > mag:
             mag = get_magnitude(i)
             location = get_location(i)
+            index = i
     return mag, location
 
+def get_frequency(data, year):
+    """Get the frequency of earthquakes in a given year."""
+    count = 0
+    for earthquake in data["features"]:
+        time = earthquake["properties"]["time"]
+        date = datetime.datetime.fromtimestamp(time / 1000)
+        print(date)
+        if date.year == year:
+            count += 1
+    return count
 
 
 # With all the above functions defined, we can now call them and get the result
@@ -82,3 +95,6 @@ print(type(data))
 print(f"Loaded {count_earthquakes(data)}")
 max_magnitude, max_location = get_maximum(data)
 print(f"The strongest earthquake was at {max_location} with magnitude {max_magnitude}")
+
+frequency = [[x, get_frequency(data, x)] for x in range(2000, 2019)]
+print(f"Frequency of earthquakes by year: {frequency}")
